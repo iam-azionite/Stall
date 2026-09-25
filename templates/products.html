@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Products</title>
+    <style>
+        :root {
+            --ink: #1c1b1a;
+            --paper: #faf9f7;
+            --line: #d8d5cf;
+            --accent: #2f5d50;
+            --accent-hover: #244a40;
+            --muted: #6b6862;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--paper);
+            font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+            color: var(--ink);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 24px;
+            padding: 16px 32px;
+            border-bottom: 1px solid var(--line);
+            background: #fff;
+        }
+
+        nav a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--ink);
+            text-decoration: none;
+        }
+
+        nav a:hover { color: var(--accent); }
+
+        nav a.logout { color: var(--muted); }
+
+        main {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 32px;
+        }
+
+        h1 {
+            margin: 0 0 28px;
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .product {
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: #fff;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            background: var(--paper);
+        }
+
+        .product .name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin: 0 0 4px;
+        }
+
+        .product .price {
+            font-size: 0.95rem;
+            color: var(--accent);
+            margin: 0 0 4px;
+        }
+
+        .product .stock {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin: 0 0 12px;
+        }
+
+        .product button {
+            margin-top: auto;
+            padding: 9px;
+            border: none;
+            border-radius: 4px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .product button:hover { background: var(--accent-hover); }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="{% url 'my_orders' %}">My Orders</a>
+    <a href="{% url 'cart' %}">My Cart</a>
+    <a class="logout" href="{% url 'logout' %}">Logout</a>
+</nav>
+<main>
+    <h1>Products</h1>
+    <div class="grid">
+        {% for product in products %}
+        <div class="product">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <p class="name">{{ product.name }}</p>
+            <p class="price">{{ product.price }}</p>
+            <p class="stock">{{ product.stock }} in stock</p>
+            <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
+                <button type="submit">Add to cart</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</main>
+</body>
+</html>
