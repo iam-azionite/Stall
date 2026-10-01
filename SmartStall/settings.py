@@ -134,11 +134,11 @@ LOGIN_URL = '/login/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATIC_URL = 'static/'
 
-Storages={
+STORAGES={
     'default':{"BACKEND":"cloudinary_storage.storage.MediaCloudinaryStorage",
 
 },
-    'staticfiles':{"BACKEND":"whitenoise.storage.CompressedManifestStaticfilesStorage"
+    'staticfiles':{"BACKEND":"whitenoise.storage.CompressedManifestStaticFilesStorage"
 
     },
 }
