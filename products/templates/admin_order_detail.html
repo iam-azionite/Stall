@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Order #{{ order.id }}</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .header {
+            background: #006b3f;
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header a {
+            color: white;
+            text-decoration: none;
+            background: #333;
+            padding: 10px 18px;
+            border-radius: 6px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .box {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .box h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .customer-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+        }
+
+        .info strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #006b3f;
+            color: white;
+        }
+
+        .total {
+            text-align: right;
+            font-size: 24px;
+            font-weight: bold;
+            color: #006b3f;
+            margin-top: 20px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: #fff3cd;
+            color: #856404;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+
+            .customer-info {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            th,
+            td {
+                padding: 8px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<div class="header">
+
+    <h1>🛍️ SmartStall Admin</h1>
+
+    <a href="{% url 'admin_dashboard' %}">
+        ← Dashboard
+    </a>
+
+</div>
+
+
+<div class="container">
+
+
+    <!-- ORDER INFORMATION -->
+
+    <div class="box">
+
+        <h2>
+            📦 Order #{{ order.id }}
+        </h2>
+
+        <span class="status">
+            {{ order.status }}
+        </span>
+
+    </div>
+
+
+    <!-- CUSTOMER INFORMATION -->
+
+    <div class="box">
+
+        <h2>👤 Customer Information</h2>
+
+        <div class="customer-info">
+
+            <div class="info">
+
+                <strong>Username</strong>
+
+                {{ order.user.username }}
+
+            </div>
+
+
+            <div class="info">
+
+                <strong>Name</strong>
+
+                {{ order.name }}
+
+            </div>
+
+
+            <div class="info">
+
+                <strong>Phone</strong>
+
+                {{ order.phone }}
+
+            </div>
+
+
+            <div class="info">
+
+                <strong>Address</strong>
+
+                {{ order.address }}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- PRODUCTS -->
+
+    <div class="box">
+
+        <h2>🛒 Ordered Products</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <td>GH₵ {{ item.subtotal }}</td>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for item in order_items %}
+
+                <tr>
+
+                    <td>
+                        {{ item.product.name }}
+                    </td>
+
+                    <td>
+                        {{ item.quantity }}
+                    </td>
+
+                    <td>
+                        GH₵ {{ item.price }}
+                    </td>
+
+                    <td>
+                        GH₵ {% widthratio item.price 1 item.quantity %}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="4">
+                        No products found for this order.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+
+        <div class="total">
+
+            Total: GH₵ {{ order.total }}
+
+        </div>
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Orders</title>
+    <style>
+        :root {
+            --ink: #1c1b1a;
+            --paper: #faf9f7;
+            --line: #d8d5cf;
+            --accent: #2f5d50;
+            --muted: #6b6862;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--paper);
+            font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+            color: var(--ink);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 24px;
+            padding: 16px 32px;
+            border-bottom: 1px solid var(--line);
+            background: #fff;
+        }
+
+        nav a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--ink);
+            text-decoration: none;
+        }
+
+        nav a:hover { color: var(--accent); }
+        nav a.logout { color: var(--muted); }
+
+        main {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 32px;
+        }
+
+        h1 {
+            margin: 0 0 24px;
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+
+        .order {
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: #fff;
+            padding: 18px 20px;
+            margin-bottom: 14px;
+        }
+
+        .order-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .order-id {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .status {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: var(--paper);
+            border: 1px solid var(--line);
+            color: var(--muted);
+        }
+
+        .order-info {
+            font-size: 0.88rem;
+            color: var(--muted);
+            margin: 0 0 12px;
+            line-height: 1.5;
+        }
+
+        .order-info span {
+            display: block;
+        }
+
+        .detail-link {
+            font-size: 0.88rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .detail-link:hover { text-decoration: underline; }
+
+        .empty {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        .back:hover { color: var(--accent); }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="{% url 'products' %}">Products</a>
+    <a class="logout" href="{% url 'logout' %}">Logout</a>
+</nav>
+<main>
+    <h1>My orders</h1>
+
+    {% for order in orders %}
+    <div class="order">
+        <div class="order-top">
+            <span class="order-id">Order #{{ order.id }}</span>
+            <span class="status">{{ order.status }}</span>
+        </div>
+        <p class="order-info">
+            <span>{{ order.name }}</span>
+            <span>{{ order.phone }}</span>
+            <span>{{ order.address }}</span>
+        </p>
+        <a class="detail-link" href="{% url 'order_detail' order.id %}">View order detail &rarr;</a>
+    </div>
+    {% empty %}
+    <p class="empty">You haven't placed any orders yet.</p>
+    {% endfor %}
+
+    <a class="back" href="{% url 'products' %}">&larr; Back to products</a>
+</main>
+</body>
+</html>

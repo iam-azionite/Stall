@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Checkout</title>
+    <style>
+        :root {
+            --ink: #1c1b1a;
+            --paper: #faf9f7;
+            --line: #d8d5cf;
+            --accent: #2f5d50;
+            --accent-hover: #244a40;
+            --muted: #6b6862;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--paper);
+            font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+            color: var(--ink);
+        }
+
+        main {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 32px;
+        }
+
+        h1 {
+            margin: 0 0 24px;
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+
+        .summary {
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 28px;
+        }
+
+        .line {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 0.9rem;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .line:last-of-type { border-bottom: none; }
+
+        .line .name { flex: 1; color: var(--ink); }
+        .line .qty { color: var(--muted); }
+        .line .price { color: var(--muted); }
+
+        .total {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 14px;
+            margin-top: 6px;
+            border-top: 1px solid var(--line);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        h2 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin: 0 0 14px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            font-size: 1rem;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: inherit;
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: 2px solid var(--accent);
+            outline-offset: 1px;
+            border-color: var(--accent);
+        }
+
+        button {
+            margin-top: 4px;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover { background: var(--accent-hover); }
+
+        .links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 24px;
+            font-size: 0.9rem;
+        }
+
+        .links a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        .links a:hover { color: var(--accent); }
+    </style>
+</head>
+<body>
+<main>
+    <h1>Checkout</h1>
+
+    <div class="summary">
+        {% for item in cart_items %}
+        <div class="line">
+            <span class="name">{{ item.product.name }}</span>
+            <span class="qty">&times;{{ item.quantity }}</span>
+            <span class="price">{{ item.product.price }}</span>
+        </div>
+        {% endfor %}
+        <div class="total">
+            <span>Total</span>
+            <span>{{ total }}</span>
+        </div>
+    </div>
+
+    <h2>Delivery details</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" required>
+        </div>
+        <div>
+            <label for="address">Address</label>
+            <textarea id="address" name="address" required></textarea>
+        </div>
+        <button type="submit">Place order</button>
+    </form>
+
+    <div class="links">
+        <a href="{% url 'products' %}">&larr; Back to products</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+</main>
+</body>
+</html>

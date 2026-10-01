@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <style>
+        :root {
+            --violet: #6a4c93;
+            --coral: #ff6b6b;
+            --gold: #ffd166;
+            --teal: #06a77d;
+            --ink: #2b2140;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--violet) 0%, #b23a6e 55%, var(--coral) 100%);
+            font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+            color: var(--ink);
+            padding: 24px;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(2px);
+            opacity: 0.55;
+        }
+
+        .blob-1 {
+            width: 340px;
+            height: 340px;
+            background: var(--gold);
+            top: -120px;
+            left: -100px;
+        }
+
+        .blob-2 {
+            width: 260px;
+            height: 260px;
+            background: var(--teal);
+            bottom: -100px;
+            right: -80px;
+        }
+
+        .card {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 360px;
+            border-radius: 20px;
+            padding: 44px 36px;
+            background: #fff;
+            box-shadow: 0 20px 50px rgba(43, 33, 64, 0.35);
+        }
+
+        .mark {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--coral), var(--gold));
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0 0 6px;
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .sub {
+            margin: 0 0 28px;
+            font-size: 0.92rem;
+            color: #6b6280;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: block;
+            color: var(--ink);
+        }
+
+        input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 2px solid #ece7f5;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: #faf9fd;
+            color: var(--ink);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--coral);
+            background: #fff;
+        }
+
+        button {
+            margin-top: 8px;
+            padding: 13px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--coral), #ff8e6b);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+        }
+    </style>
+</head>
+<body>
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<div class="card">
+    <div class="mark"></div>
+    <h1>Welcome back</h1>
+    <p class="sub">Log in to pick up where you left off.</p>
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" autocomplete="username" required>
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" autocomplete="current-password" required>
+        </div>
+        <button type="submit">Log in</button>
+    </form>
+</div>
+</body>
+</html>

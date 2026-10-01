@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cart</title>
+    <style>
+        :root {
+            --ink: #1c1b1a;
+            --paper: #faf9f7;
+            --line: #d8d5cf;
+            --accent: #2f5d50;
+            --accent-hover: #244a40;
+            --muted: #6b6862;
+            --error: #b3423a;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--paper);
+            font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+            color: var(--ink);
+        }
+
+        main {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 32px;
+        }
+
+        h1 {
+            margin: 0 0 28px;
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .item .info {
+            flex: 1;
+        }
+
+        .item .name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin: 0 0 4px;
+        }
+
+        .item .price {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin: 0;
+        }
+
+        .qty {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .qty form { display: inline; }
+
+        .qty button {
+            width: 28px;
+            height: 28px;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            background: #fff;
+            color: var(--ink);
+            font-size: 1rem;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .qty button:hover { border-color: var(--accent); color: var(--accent); }
+
+        .qty .count {
+            min-width: 20px;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .remove {
+            border: none;
+            background: none;
+            color: var(--error);
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .remove:hover { text-decoration: underline; }
+
+        .summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 0;
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .checkout {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .checkout:hover { background: var(--accent-hover); }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        .back:hover { color: var(--accent); }
+    </style>
+</head>
+<body>
+<main>
+    <h1>My cart</h1>
+
+    {% for item in cart_items %}
+    <div class="item">
+        <div class="info">
+            <p class="name">{{ item.product.name }}</p>
+            <p class="price">{{ item.product.price }}</p>
+        </div>
+        <div class="qty">
+            <form method="POST" action="{% url 'decrease_quantity' item.id %}">
+                {% csrf_token %}
+                <button type="submit" aria-label="Decrease quantity">&minus;</button>
+            </form>
+            <span class="count">{{ item.quantity }}</span>
+            <form method="POST" action="{% url 'increase_quantity' item.id %}">
+                {% csrf_token %}
+                <button type="submit" aria-label="Increase quantity">+</button>
+            </form>
+        </div>
+        <form method="POST" action="{% url 'remove_from_cart' item.id %}">
+            {% csrf_token %}
+            <button type="submit" class="remove">Remove</button>
+        </form>
+    </div>
+    {% endfor %}
+
+    <div class="summary">
+        <span>Total</span>
+        <span>{{ total }}</span>
+    </div>
+
+    <a class="checkout" href="{% url 'checkout' %}">Checkout</a>
+    <a class="back" href="{% url 'products' %}">&larr; Back to products</a>
+</main>
+</body>
+</html>
