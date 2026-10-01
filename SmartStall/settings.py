@@ -135,10 +135,10 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATIC_URL = 'static/'
 
 Storages={
-    'default':{"BACKEND":"cloudinary.storage.CompressedManifestStaticFilesStorage"
+    'default':{"BACKEND":"cloudinary.storage.MediaCloudinaryStorage",
 
 },
-    'staticfiles':{"BACKEND":"white.storage.WhiteCloudinaryStorage"
+    'staticfiles':{"BACKEND":"whitenoise.storage.CompressedManifestStaticfilesStorage"
 
     },
 }
